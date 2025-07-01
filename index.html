@@ -1,47 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>ข้อความลับ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ข้อความลับตามเวลา</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f8ff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 90%;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
     #message {
       display: none;
       margin-top: 20px;
-      color: blue;
+      color: green;
       font-size: 18px;
     }
+
     #notyet {
-      color: red;
       margin-top: 20px;
+      color: red;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
 
-<h2>ข้อความที่แชร์</h2>
-<button onclick="checkAccess()">คลิกเพื่อดูข้อความ</button>
+  <div class="container">
+    <h2>🔒 ข้อความลับ</h2>
+    <button onclick="checkAccess()">คลิกเพื่อดูข้อความ</button>
+    <div id="notyet"></div>
+    <div id="message">✅ ยินดีต้อนรับ! ข้อความลับนี้พร้อมให้ดูแล้ว 🎉</div>
+  </div>
 
-<div id="notyet"></div>
-<div id="message">🌟 ข้อความลับ: Hardware ที่ต้องเตรียมมีดังนี้!</div>
+  <script>
+    function checkAccess() {
+      const now = new Date();
 
-<script>
-  function checkAccess() {
-    const now = new Date();
+      // 🕘 เปลี่ยนวันที่และเวลาเริ่มเข้าถึงได้ที่นี่ (ปี, เดือน-1, วัน, ชั่วโมง, นาที)
+      const availableFrom = new Date(2025, 6, 1, 11, 30); // 2 ก.ค. 2025 09:00
 
-    // 🔧 ตั้งเวลาที่อนุญาตให้ดูข้อความ (ปี, เดือน-1, วัน, ชั่วโมง, นาที)
-    const availableFrom = new Date(2025, 6, 1, 10, 30); // 2 ก.ค. 2025 เวลา 09:00
-
-    if (now >= availableFrom) {
-      document.getElementById("message").style.display = "block";
-      document.getElementById("notyet").style.display = "none";
-    } else {
-      document.getElementById("message").style.display = "none";
-      const remain = Math.ceil((availableFrom - now)/1000);
-      document.getElementById("notyet").innerText = "⏳ ยังไม่ถึงเวลาที่จะดูข้อความ กรุณารอจนถึง " +availableFrom + "เหลือเวลาอีก "+ remain +" วินาที";
+      if (now >= availableFrom) {
+        document.getElementById("message").style.display = "block";
+        document.getElementById("notyet").style.display = "none";
+      } else {
+        const remainingSeconds = Math.ceil((availableFrom - now) / 1000);
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = remainingSeconds % 60;
+        document.getElementById("message").style.display = "none";
+        document.getElementById("notyet").innerText =
+          `⏳ ยังไม่ถึงเวลา กรุณารออีก ${minutes} นาที ${seconds} วินาที`;
+      }
     }
-  }
-</script>
+  </script>
 
 </body>
 </html>
-
